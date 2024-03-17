@@ -1,0 +1,11 @@
+controladores\exceptions\IllegalOrphanException.class
+servelet\juegoServelet.class
+modelos\Categoria.class
+servelet\categoriaServelet.class
+controladores\CategoriaJpaController.class
+controladores\exceptions\PreexistingEntityException.class
+prueba\Prueba.class
+controladores\exceptions\NonexistentEntityException.class
+controladores\JuegoJpaController.class
+modelos\Juego.class
+servelet\consultaServelet.class
