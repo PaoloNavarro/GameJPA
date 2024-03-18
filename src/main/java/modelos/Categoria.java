@@ -43,7 +43,7 @@ public class Categoria implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "categoria")
+    @Column(name = "categoria", unique = true)
     private String categoria;
     @Basic(optional = false)
     @NotNull

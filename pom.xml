@@ -16,6 +16,7 @@
         <jakartaee>8.0</jakartaee>
     </properties>
     
+    
     <dependencies>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
@@ -53,11 +54,21 @@
             <version>8.0.30</version>
         </dependency>
         <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext7-core</artifactId>
+            <version>7.1.16</version>
+            <type>pom.sha512</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
+        
+
+
+        
     </dependencies>
     
      <build>

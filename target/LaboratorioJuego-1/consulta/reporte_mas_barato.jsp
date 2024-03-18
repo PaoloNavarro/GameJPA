@@ -53,21 +53,29 @@
 </head>
 <body>
 
-<h1 class="mb-3">Lista de Juegos más Baratos</h1>
-  <button onclick="imprimirTabla()" class="btn btn-primary mb-2">
-            <i class="fas fa-print"></i> Imprimir Tabla
-  </button>
+<h1 class="mb-2">Lista de Juegos más Baratos</h1>
+<div class="d-flex mb-2">
+    <button onclick="imprimirTabla()" class="btn btn-primary" style="margin-right: 10px;">
+        <i class="fas fa-print"></i> Imprimir Tabla
+    </button>
+    <a href="exportcsvmasbajos" class="btn btn-success" style="margin-right: 10px;">
+        <i class="fas fa-file-csv"></i> Exportar CSV
+    </a>
+    <a href="exportpdfmasbajos" class="btn btn-danger" style="margin-right: 10px;" onclick="exportarPDF()">
+        <i class="fas fa-file-pdf"></i> Exportar PDF
+    </a>
+</div>
+
+
 <!-- Contenedor de la tabla con barra de desplazamiento horizontal -->
 <div class="table-container">
     <table id="miTabla1" class="table">
         <thead>
             <tr>
-                <th class="d-none">ID</th>
                 <th>Nombre</th>
                 <th>Categoría</th>
                 <th>Precio</th>
                 <th>Existencias</th>
-                <th>Imagen</th>
                 <th>Calificación</th>
 
             </tr>
@@ -75,14 +83,10 @@
         <tbody>
             <c:forEach items="${juegos}" var="juego">
                 <tr>
-                    <td class="d-none">${juego.idjuego}</td>
                     <td>${juego.nomJuego}</td>
                     <td>${juego.idcategoria.categoria}</td>
                     <td>${juego.precio}</td>
                     <td>${juego.existencias}</td>
-                    <td>
-                        <img src="${juego.imagen}" alt="image-${juego.nomJuego}" style="max-width: 75px; max-height: 50px;">
-                    </td>
                     <td>${juego.clasificacion}</td>
                
                 </tr>

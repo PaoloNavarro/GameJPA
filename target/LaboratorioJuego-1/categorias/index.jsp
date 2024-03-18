@@ -4,6 +4,56 @@
     <title>Lista de alumnos</title>
     <%@ include file="/layout/header.jsp" %>
     <style>
+          /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 9999; /* Sit on top */
+      left: 50%; /* Centrar horizontalmente */
+      top: 50%; /* Centrar verticalmente */
+      transform: translate(-50%, -50%); /* Centrar completamente */
+      width: 50%; /* Ancho del modal */
+      height: 50%; /* Altura del modal */
+      overflow: auto; /* Habilitar desplazamiento si es necesario */
+      background-color: rgba(255, 255, 255, 0.9); /* Color de fondo */
+      border: 1px solid rgba(0, 0, 0, 0.2); /* Borde con color y transparencia */
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* Sombra */
+    }
+
+
+
+    /* Modal Content/Box */
+    .modal-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .modal-img {
+      width: 400px;
+      height: 400px;
+    }
+
+    /* Close Button */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #000000;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      border: 2px solid ; /* Borde transparente por defecto */
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #ff0000; /* Cambiar color a rojo cuando el cursor está encima */
+      text-decoration: none;
+      cursor: pointer;
+      border-color: #000; /* Agregar un borde negro cuando el cursor está encima */
+    }
         .table-container {
             overflow-x: auto; /* Añade barra de desplazamiento horizontal */
         }
@@ -73,7 +123,7 @@
                     <td class="d-none">${categoria.idcategoria}</td>
                     <td>${categoria.categoria}</td>
                     <td>
-                        <img src="${categoria.imagenCat}" alt="image-${categoria.categoria}" style="max-width: 75px; max-height: 50px;">
+                        <img src="${categoria.imagenCat}" alt="image-${categoria.categoria}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${categoria.imagenCat}')">
                     </td>                
                     <td>
                         <a href="categoriaseditar?id=${categoria.idcategoria}" class="btn btn-primary">
@@ -87,6 +137,13 @@
             </c:forEach>
         </tbody>
     </table>
+</div>
+<!-- The Modal -->
+<div id="imagenModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <img id="imagenGrande" class="modal-img">
+  </div>
 </div>
 
     

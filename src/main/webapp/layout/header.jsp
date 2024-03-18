@@ -38,20 +38,31 @@
 
     <!-- Bloque de estilo personalizado -->
     <style>
-        .body{
-         background-color: #f5f7f8; /* Color de fondo suave */
-  
-        }
+      .body {
+        background-image: url('https://i.ibb.co/W5SVDQy/glitch-videojuegos-joystick-textura-patrones-fisuras-615746-110.jpg'); /* URL directa de la imagen de fondo */
+        background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
+        background-position: center center; /* Centra la imagen en el fondo */
+    }
         /* Estilo del Navbar */
         .navbar {
-            background-color: #ebf2f5; /* Color de fondo suave */
+            background-color: #fff; /* Color de fondo suave */
         }
 
-        /* Estilo del logotipo */
-        .navbar-brand {
-            font-size: 24px;
-            color: #333; /* Color de texto más oscuro */
-        }
+            .navbar-brand {
+               font-size: 22px;
+               color: #333; /* Color de texto más oscuro */
+               display: flex;
+               align-items: center; /* Centrar verticalmente */
+               padding: 5px 10px;
+               border-radius: 10px; /* Bordes redondeados */
+           }
+
+           .navbar-brand img {
+               width: 30px; /* Ancho de la imagen */
+               height: auto; /* Altura automática */
+               margin-right: 5px; /* Margen a la derecha de la imagen */
+           }
 
         /* Estilo del botón de hamburguesa */
         .custom-toggler .navbar-toggler-icon {
@@ -65,31 +76,17 @@
 
         /* Estilo de los enlaces del menú */
         .navbar-nav .nav-item {
-            margin: 0 10px;
+            margin: 0 25px;
         }
 
         .navbar-nav .nav-link {
-            font-size: 16px;
+            font-size: 22px;
             color: #333; /* Color de texto más oscuro */
             transition: color 0.3s; /* Transición de color suave */
         }
 
         .navbar-nav .nav-link:hover {
-            color: #555; /* Cambio de color al pasar el mouse */
-        }
-
-        /* Estilo del botón de cerrar sesión */
-        .logout-button {
-            background-color: #dc3545; /* Color de fondo rojo */
-            color: #fff; /* Color de texto blanco */
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            transition: background-color 0.3s; /* Transición de color de fondo suave */
-        }
-
-        .logout-button:hover {
-            background-color: #c82333; /* Cambio de color de fondo al pasar el mouse */
+            color: #888; /* Cambio de color al pasar el mouse */
         }
 
         /* Estilo del contenedor del contenido */
@@ -101,6 +98,7 @@
             border-radius: 5px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
         }
+     
     </style>
 </head>
 <body class="body">
@@ -110,7 +108,7 @@
             <a class="navbar-brand" href="../LaboratorioJuego/index.jsp">
              
                 <img  src="https://i.ibb.co/Zxs7tg0/consola-de-juego.png"  alt="Logo de la Movie" width="40" height="40">
-                GameCategoryWEB
+                <span>  GameCategoryWEB</span>
             </a>
             <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i> <!-- Icono de hamburguesa personalizado de FontAwesome -->

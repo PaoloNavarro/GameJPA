@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelos.Categoria;
 
 import modelos.Juego;
@@ -110,32 +111,52 @@ public class juegoServelet extends HttpServlet {
 
 private void crearJuego(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String nomJuego = request.getParameter("nomJuego");
-    int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
-    float precio = Float.parseFloat(request.getParameter("precio"));
-    int existencias = Integer.parseInt(request.getParameter("existencias"));
-    String imagen = request.getParameter("imagen");
-    String clasificacion = request.getParameter("clasificacion");
+    HttpSession session = request.getSession();
+    try{
+        String nomJuego = request.getParameter("nomJuego");
+        int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
+        float precio = Float.parseFloat(request.getParameter("precio"));
+        int existencias = Integer.parseInt(request.getParameter("existencias"));
+        String imagen = request.getParameter("imagen");
+        String clasificacion = request.getParameter("clasificacion");
+        
+        // Verificar si ya existe un juego con el mismo nombre
+        Juego juegoExistente = juegoController.findByNomJuego(nomJuego);
+        if (juegoExistente != null) {
+            // Si ya existe un juego con el mismo nombre, mostrar mensaje de error
+            session.setAttribute("errorMessage", "Ya existe un juego con ese nombre");
+            response.sendRedirect("juegos");
+            return;
+        }
+        
+        // Obtener el objeto Categoria correspondiente al ID
+        Categoria categoria = new Categoria();
+        categoria.setIdcategoria(idCategoria);
 
-    // Obtener el objeto Categoria correspondiente al ID
-    Categoria categoria = new Categoria();
-    categoria.setIdcategoria(idCategoria);
+        Juego juego = new Juego();
+        juego.setNomJuego(nomJuego);
+        juego.setIdcategoria(categoria);
+        juego.setPrecio(precio);
+        juego.setExistencias(existencias);
+        juego.setImagen(imagen);
+        juego.setClasificacion(clasificacion);
 
-    Juego juego = new Juego();
-    juego.setNomJuego(nomJuego);
-    juego.setIdcategoria(categoria);
-    juego.setPrecio(precio);
-    juego.setExistencias(existencias);
-    juego.setImagen(imagen);
-    juego.setClasificacion(clasificacion);
+        juegoController.create(juego);
+        session.setAttribute("successMessage", "Juego creado con éxito");
+        response.sendRedirect("juegos");
+    }catch (Exception ex) {
+        ex.printStackTrace();
+        session.setAttribute("errorMessage", "Error al crear el Juego");
+        response.sendRedirect("juegos?error=true");
+    }
 
-    juegoController.create(juego);
 
-    response.sendRedirect("juegos");
 }
 
 private void editarJuego(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
+    HttpSession session = request.getSession();
+
     int idJuego = Integer.parseInt(request.getParameter("idJuego"));
     String nomJuego = request.getParameter("nomJuego");
     int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
@@ -143,7 +164,6 @@ private void editarJuego(HttpServletRequest request, HttpServletResponse respons
     int existencias = Integer.parseInt(request.getParameter("existencias"));
     String imagen = request.getParameter("imagen");
     String clasificacion = request.getParameter("clasificacion");
-
 
     // Obtener el objeto Categoria correspondiente al ID
     Categoria categoria = new Categoria();
@@ -159,24 +179,46 @@ private void editarJuego(HttpServletRequest request, HttpServletResponse respons
     juego.setClasificacion(clasificacion);
 
     try {
+        Juego juegoExistente = juegoController.findJuego(idJuego);
+        if (juegoExistente != null) {
+            // Verificar si el nombre del juego ha sido modificado
+            if (!juegoExistente.getNomJuego().equals(nomJuego)) {
+                // Si el nombre ha sido modificado, realizar la validación
+                // Buscar si el nombre del juego ya existe en la base de datos
+                Juego juegoExistenteConMismoNombre = juegoController.findByNomJuego(nomJuego);
+                if (juegoExistenteConMismoNombre != null) {
+                    session.setAttribute("errorMessage", "El nombre del juego ya existe");
+                    response.sendRedirect("juegos?error=true");
+                    return; // Terminar la ejecución del método
+                }
+            }
+        }
+
+        // Si no hay problema con el nombre, proceder con la edición
         juegoController.edit(juego);
+        session.setAttribute("successMessage", "Juego editado con éxito");
         response.sendRedirect("juegos");
     } catch (Exception ex) {
         ex.printStackTrace();
+        session.setAttribute("errorMessage", "Error al editar el Juego");
         response.sendRedirect("juegos?error=true");
     }
 }
 
 
+
     private void eliminarJuego(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            HttpSession session = request.getSession();
         int idJuego = Integer.parseInt(request.getParameter("id"));
 
         try {
             juegoController.destroy(idJuego);
+                session.setAttribute("successMessage", "Juego eliminado con éxito");
             response.sendRedirect("juegos");
         } catch (Exception ex) {
             ex.printStackTrace();
+                session.setAttribute("errorMessage", "Error al eliminar el Juego");
             response.sendRedirect("juegos?error=true");
         }
     }

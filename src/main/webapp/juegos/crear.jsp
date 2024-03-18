@@ -59,6 +59,17 @@
                 <option value="${categoria.idcategoria}">${categoria.categoria}</option>
              </c:forEach>
     </select><br><br>
+     <label for="clasificacion">Clasificación:</label>
+    <select id="clasificacion" name="clasificacion" required>
+        <option value="EC"> Early Childhood E</option>
+        <option value="E">Everyone (E)</option>
+        <option value="E10+">Everyone 10+ (E10+)</option>
+        <option value="T">Teen (T)</option>
+        <option value="M">Mature (M)</option>
+        <option value="AO">Adults Only (AO)</option>
+         <option value="RP">Ratin pending (RP)</option>
+
+    </select><br><br>
 
     <label for="precio">Precio:</label>
     <input type="number" id="precio" name="precio" required min="0" step="0.01"><br><br>
@@ -69,14 +80,7 @@
     <label for="imagen">Imagen:</label>
     <input type="url" id="imagen" name="imagen" required><br><br>
     
-    <label for="clasificacion">Clasificación:</label>
-    <select id="clasificacion" name="clasificacion" required>
-        <option value="E">Everyone (E)</option>
-        <option value="E10+">Everyone 10+ (E10+)</option>
-        <option value="T">Teen (T)</option>
-        <option value="M">Mature (M)</option>
-        <option value="AO">Adults Only (AO)</option>
-    </select><br><br>
+   
 
     <input type="submit" value="Guardar Juego">
 </form>

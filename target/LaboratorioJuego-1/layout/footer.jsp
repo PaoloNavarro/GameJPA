@@ -137,9 +137,50 @@ $(document).ready(function() {
     });
 </script>
 <script>
-    $(document).ready(function() {
-        $('#clasificacion').select2();
+   $(document).ready(function() {
+    $('#clasificacion').select2({
+        templateResult: formatClasificacion
     });
+
+    // Función para personalizar el formato de las opciones
+    function formatClasificacion(option) {
+        if (!option.id) {
+            return option.text;
+        }
+
+        var imageUrl;
+        switch (option.id) {
+            case 'EC':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/ESRB_2013_Early_Childhood.svg/1280px-ESRB_2013_Early_Childhood.svg.png';
+                break;
+            case 'E':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/ESRB_2013_Everyone.svg/1280px-ESRB_2013_Everyone.svg.png';
+                break;
+            case 'E10+':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/ESRB_2013_Everyone_10%2B.svg/1280px-ESRB_2013_Everyone_10%2B.svg.png';
+                break;
+            case 'T':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/ESRB_2013_Teen.svg/1280px-ESRB_2013_Teen.svg.png';
+                break;
+            case 'M':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/ESRB_2013_Mature.svg/1280px-ESRB_2013_Mature.svg.png';
+                break;
+            case 'AO':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ESRB_2013_Adults_Only_18%2B.svg/1280px-ESRB_2013_Adults_Only_18%2B.svg.png';
+                break;
+            case 'RP':
+                imageUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/ESRB_2013_Rating_Pending.svg/1280px-ESRB_2013_Rating_Pending.svg.png';
+                break;
+            default:
+                imageUrl = '';
+        }
+
+         var $option = $(
+                '<span><img src="' + imageUrl + '" class="img-clasificacion" style="width: 30px; height: 30px;" /> ' + option.text + '</span>'
+            );
+        return $option;
+    }
+});
 </script>
 
 <script>
@@ -149,11 +190,12 @@ $(document).ready(function() {
         // Crear una ventana nueva para imprimir
         var ventanaImpresion = window.open('', '_blank');
         // Escribir el contenido de la tabla en la ventana de impresión
-        ventanaImpresion.document.write('<html><head><title>Tabla de Juegos</title>');
+        ventanaImpresion.document.write('<html><head><title>Reporte de Juegos</title>');
         // Agregar estilos CSS para la impresión
         ventanaImpresion.document.write('<style>');
         ventanaImpresion.document.write('@media print {');
         ventanaImpresion.document.write('body { font-family: Arial, sans-serif; }');
+        ventanaImpresion.document.write('h1 { text-align: center; margin-bottom: 20px; }');
         ventanaImpresion.document.write('table { border-collapse: collapse; width: 100%; }');
         ventanaImpresion.document.write('table, th, td { border: 1px solid #dee2e6; }');
         ventanaImpresion.document.write('th, td { padding: 8px; text-align: left; }');
@@ -162,11 +204,27 @@ $(document).ready(function() {
         ventanaImpresion.document.write('}');
         ventanaImpresion.document.write('</style>');
         ventanaImpresion.document.write('</head><body>');
+        ventanaImpresion.document.write('<h1>Reporte de Juegos</h1>');
         ventanaImpresion.document.write(contenidoTabla);
         ventanaImpresion.document.write('</body></html>');
         // Imprimir la ventana
         ventanaImpresion.print();
         // Cerrar la ventana después de imprimir
         ventanaImpresion.close();
+    }
+</script>
+
+<script>
+    function mostrarImagen(imagenSrc) {
+        var modal = document.getElementById('imagenModal');
+        var modalImg = document.getElementById('imagenGrande');
+
+        modal.style.display = "block";
+        modalImg.src = imagenSrc;
+    }
+
+    function cerrarModal() {
+        var modal = document.getElementById('imagenModal');
+        modal.style.display = "none";
     }
 </script>

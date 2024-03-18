@@ -45,7 +45,7 @@ public class Juego implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 75)
-    @Column(name = "nomJuego")
+    @Column(name = "nomJuego", unique = true)
     private String nomJuego;
     @Basic(optional = false)
     @NotNull

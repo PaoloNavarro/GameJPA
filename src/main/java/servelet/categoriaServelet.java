@@ -92,9 +92,16 @@ public class categoriaServelet extends HttpServlet {
             throws ServletException, IOException {
                         HttpSession session = request.getSession();
                         try{
+                            
                             String nombreCategoria = request.getParameter("categoria");
                             String urlCategoria = request.getParameter("imagen");
-                            Categoria categoria = new Categoria();
+                               if (categoriaController.findCategoriaByNombre(nombreCategoria) != null) {
+                                    // Si la categoría ya existe, mostrar un mensaje de error y redirigir de vuelta al formulario
+                                    session.setAttribute("errorMessage", "¡La categoría ya existe!");
+                                    response.sendRedirect("categoriascrear");
+                                    return; // Terminar la ejecución del método
+                                }
+                             Categoria categoria = new Categoria();
                             categoria.setCategoria(nombreCategoria);
                             categoria.setImagenCat(urlCategoria);
                             categoriaController.create(categoria);
@@ -107,28 +114,43 @@ public class categoriaServelet extends HttpServlet {
         
     }
 
-    private void editarCategoria(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-                HttpSession session = request.getSession();
+   private void editarCategoria(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        HttpSession session = request.getSession();
 
         int idCategoria = Integer.parseInt(request.getParameter("idCategoria1"));
         String nombreCategoria = request.getParameter("categoria");
         String imagen = request.getParameter("imagen");
+
         Categoria categoria = categoriaController.findCategoria(idCategoria);
+        String nombreOriginal = categoria.getCategoria();
+
+        // Verificar si el nuevo nombre es diferente del nombre original
+        if (!nombreCategoria.equals(nombreOriginal)) {
+            // El nombre ha cambiado, buscar si ya existe una categoría con el nuevo nombre
+            Categoria categoriaExistente = categoriaController.findCategoriaByNombre(nombreCategoria);
+            if (categoriaExistente != null) {
+                // Ya existe una categoría con el nuevo nombre, mostrar mensaje de error
+                session.setAttribute("errorMessage", "Ya existe una categoría con ese nombre");
+                response.sendRedirect("categoriaseditar");
+                return;
+            }
+        }
+
+        // Actualizar la categoría
         categoria.setCategoria(nombreCategoria);
         categoria.setImagenCat(imagen);
+
         try {
             categoriaController.edit(categoria);
-        
             session.setAttribute("successMessage", "Categoria editada con éxito");
-              response.sendRedirect("categorias");
-
-
+            response.sendRedirect("categorias");
         } catch (Exception ex) {
             ex.printStackTrace();
-        response.sendRedirect("juegos?error=true");
+            response.sendRedirect("categorias?error=true");
         }
-    }
+}
+
 
     private void eliminarCategoria(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

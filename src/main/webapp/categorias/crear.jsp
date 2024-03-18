@@ -44,6 +44,7 @@
         text-align: center;
         text-decoration: none;
         font-weight: bold;
+         margin-top: 15px;
     }
 </style>
 
@@ -56,7 +57,7 @@
     <label for="imagen">URL de la Imagen:</label>
     <input type="url" id="imagen" name="imagen" required><br>
 
-    <input type="submit" value="Guardar Categoría">
+    <input  type="submit" value="Guardar Categoría">
 </form>
 
 

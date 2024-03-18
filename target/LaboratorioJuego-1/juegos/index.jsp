@@ -4,6 +4,59 @@
     <title>Lista de juegos</title>
     <%@ include file="/layout/header.jsp" %>
     <style>
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 9999; /* Sit on top */
+      left: 50%; /* Centrar horizontalmente */
+      top: 50%; /* Centrar verticalmente */
+      transform: translate(-50%, -50%); /* Centrar completamente */
+      width: 50%; /* Ancho del modal */
+      height: 50%; /* Altura del modal */
+      overflow: auto; /* Habilitar desplazamiento si es necesario */
+      background-color: rgba(255, 255, 255, 0.9); /* Color de fondo */
+      border: 1px solid rgba(0, 0, 0, 0.2); /* Borde con color y transparencia */
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); /* Sombra */
+    }
+
+
+
+    /* Modal Content/Box */
+    .modal-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .modal-img {
+      width: 400px;
+      height: 400px;
+    }
+
+    /* Close Button */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #000000;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      border: 2px solid ; /* Borde transparente por defecto */
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #ff0000; /* Cambiar color a rojo cuando el cursor está encima */
+      text-decoration: none;
+      cursor: pointer;
+      border-color: #000; /* Agregar un borde negro cuando el cursor está encima */
+    }
+
+
+
         .table-container {
             overflow-x: auto; /* Añade barra de desplazamiento horizontal */
         }
@@ -79,12 +132,53 @@
                     <td>${juego.precio}</td>
                     <td>${juego.existencias}</td>
                    
-                    <td>
-                        <img src="${juego.imagen}" alt="image-${juego.nomJuego}" style="max-width: 75px; max-height: 50px;">
-                    </td>  
-                    <td>
-                        ${juego.clasificacion}
-                    </td>
+                  <td>
+                    <img id="imagenJuego${juego.idjuego}" src="${juego.imagen}" alt="image-${juego.nomJuego}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${juego.imagen}')">
+                </td>
+                <td>
+                    <%-- Mostrar imagen de clasificación según el valor --%>
+                    <c:choose>
+                        <c:when test="${juego.clasificacion eq 'EC'}">
+                            <img id="imagenClasificacionEC" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/ESRB_2013_Early_Childhood.svg/1280px-ESRB_2013_Early_Childhood.svg.png" alt="EC" style="width: 30px; height: 30px;"
+                                onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/ESRB_2013_Early_Childhood.svg/1280px-ESRB_2013_Early_Childhood.svg.png')">
+                            <span>(EC)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'E'}">
+                            <img  id="imagenClasificacionE" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/ESRB_2013_Everyone.svg/1280px-ESRB_2013_Everyone.svg.png" alt="E" style="width: 30px; height: 30px;"
+                           onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/ESRB_2013_Everyone.svg/1280px-ESRB_2013_Everyone.svg.png')">
+
+                            <span> (E)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'E10+'}">
+                            <img id="imagenClasificacionE10+" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/ESRB_2013_Everyone_10%2B.svg/1280px-ESRB_2013_Everyone_10%2B.svg.png" alt="E10+" style="width: 30px; height: 30px;"
+                                  onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/ESRB_2013_Everyone_10%2B.svg/1280px-ESRB_2013_Everyone_10%2B.svg.png')">
+                            <span>(E10+)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'T'}">
+                            <img id="imagenClasificacionT" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/ESRB_2013_Teen.svg/1280px-ESRB_2013_Teen.svg.png" alt="T" style="width: 30px; height: 30px;"
+                                  onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/ESRB_2013_Teen.svg/1280px-ESRB_2013_Teen.svg.png')">
+                            <span>(T)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'M'}">
+                            <img id="imagenClasificacionM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/ESRB_2013_Mature.svg/1280px-ESRB_2013_Mature.svg.png" alt="M" style="width: 30px; height: 30px;"
+                                  onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/ESRB_2013_Mature.svg/1280px-ESRB_2013_Mature.svg.png')">
+                             <span>(M)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'AO'}">
+                            <img id="imagenClasificacionAO" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ESRB_2013_Adults_Only_18%2B.svg/1280px-ESRB_2013_Adults_Only_18%2B.svg.png" alt="AO" style="width: 30px; height: 30px;"
+                                  onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/ESRB_2013_Adults_Only_18%2B.svg/1280px-ESRB_2013_Adults_Only_18%2B.svg.png')">
+                             <span>(AO)</span>
+                        </c:when>
+                        <c:when test="${juego.clasificacion eq 'RP'}">
+                            <img id="imagenClasificacionRP" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/ESRB_2013_Rating_Pending.svg/1280px-ESRB_2013_Rating_Pending.svg.png" alt="RP" style="width: 30px; height: 30px;"
+                                  onclick="mostrarImagen('https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/ESRB_2013_Rating_Pending.svg/1280px-ESRB_2013_Rating_Pending.svg.png')">
+                              <span>(RP)</span>
+                        </c:when>
+                        <c:otherwise>
+                            ${juego.clasificacion}
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                     <td>
                         <a href="juegoseditar?id=${juego.idjuego}" class="btn btn-primary">
                             <i class="fas fa-pencil-alt"></i> Editar
@@ -98,6 +192,14 @@
         </tbody>
     </table>
 </div>
-    
+<!-- The Modal -->
+<div id="imagenModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <img id="imagenGrande" class="modal-img">
+  </div>
+</div>
+
+
 <%@ include file="/layout/footer.jsp" %>
 

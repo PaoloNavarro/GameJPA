@@ -189,5 +189,24 @@ public class JuegoJpaController implements Serializable {
             em.close();
         }
     }
+    public Juego findByNomJuego(String nomJuego) {
+        EntityManager em = getEntityManager();
+            try {
+                String jpql = "SELECT j FROM Juego j WHERE j.nomJuego = :nomJuego";
+                Query query = em.createQuery(jpql);
+                query.setParameter("nomJuego", nomJuego);
+                List<Juego> juegos = query.getResultList();
+                if (!juegos.isEmpty()) {
+                    // Si se encuentra algún juego con el nombre especificado, devolver el primero de la lista
+                    return juegos.get(0);
+                } else {
+                    // Si no se encuentra ningún juego con el nombre especificado, devolver null
+                    return null;
+                }
+            } finally {
+                em.close();
+            }
+    }
+
     
 }
