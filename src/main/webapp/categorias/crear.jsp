@@ -46,6 +46,9 @@
         font-weight: bold;
          margin-top: 15px;
     }
+     #imagenPreviewContainer {
+        text-align: center; /* Centrar contenido horizontalmente */
+    }
 </style>
 
 <form action="categoriascrear" method="post">
@@ -55,8 +58,12 @@
     <input type="text" id="categoria" name="categoria" required><br>
 
     <label for="imagen">URL de la Imagen:</label>
-    <input type="url" id="imagen" name="imagen" required><br>
+    <input type="url" id="imagen" name="imagen" required onchange="mostrarImagen(this.value)"><br>
 
+    <div id="imagenPreviewContainer" style="display: none;">
+        <img id="imagenPreview" src="#" alt="Vista previa de la imagen" style="margin-top: 10px ; max-width: 100px;">
+    </div>
+    
     <input  type="submit" value="Guardar Categoría">
 </form>
 
@@ -97,5 +104,16 @@
         }
 
         return true;
+    }
+     function mostrarImagen(urlImagen) {
+        var previewContainer = document.getElementById("imagenPreviewContainer");
+        var previewImagen = document.getElementById("imagenPreview");
+
+        if (urlImagen.trim() === "") {
+            previewContainer.style.display = "none";
+        } else {
+            previewImagen.src = urlImagen;
+            previewContainer.style.display = "block";
+        }
     }
 </script>

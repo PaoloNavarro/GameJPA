@@ -45,6 +45,9 @@
         text-decoration: none;
         font-weight: bold;
     }
+         #imagenPreviewContainer {
+        text-align: center; /* Centrar contenido horizontalmente */
+    }
 </style>
 
 <form action="juegoscrear" method="post"  onsubmit="return validarFormulario()">
@@ -78,9 +81,11 @@
     <input type="number" id="existencias" name="existencias" required min="0"><br><br>
 
     <label for="imagen">Imagen:</label>
-    <input type="url" id="imagen" name="imagen" required><br><br>
+    <input type="url" id="imagen" name="imagen" required onchange="mostrarImagen(this.value)"><br><br>
     
-   
+    <div id="imagenPreviewContainer" style="display: none;">
+         <img id="imagenPreview" src="#" alt="Vista previa de la imagen" style="margin-top: 10px ; margin-bottom: 5px; max-width: 100px;">
+     </div>
 
     <input type="submit" value="Guardar Juego">
 </form>
@@ -121,5 +126,16 @@
         }
 
         return true;
+    }
+    function mostrarImagen(urlImagen) {
+        var previewContainer = document.getElementById("imagenPreviewContainer");
+        var previewImagen = document.getElementById("imagenPreview");
+
+        if (urlImagen.trim() === "") {
+            previewContainer.style.display = "none";
+        } else {
+            previewImagen.src = urlImagen;
+            previewContainer.style.display = "block";
+        }
     }
 </script>
