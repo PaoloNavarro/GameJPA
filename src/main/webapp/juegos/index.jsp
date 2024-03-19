@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 
     <title>Lista de juegos</title>
     <%@ include file="/layout/header.jsp" %>
@@ -124,6 +125,7 @@
             </tr>
         </thead>
         <tbody>
+            <c:set var="uploadPath" value="uploads/" />
             <c:forEach items="${juegos}" var="juego">
                 <tr>
                     <td class="d-none">${juego.idjuego}</td>
@@ -133,7 +135,13 @@
                     <td>${juego.existencias}</td>
                    
                   <td>
-                    <img id="imagenJuego${juego.idjuego}" src="${juego.imagen}" alt="image-${juego.nomJuego}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${juego.imagen}')">
+                       <c:set var="segments" value="${fn:split(juego.imagen, '/')}"/>
+                       <c:set var="lastSegmentIndex" value="${fn:length(segments) - 1}"/>
+                        <c:set var="lastSegment" value="${segments[lastSegmentIndex]}"/>
+                        <%-- Construir la nueva ruta de la imagen con el último segmento --%>
+                        <c:set var="newImagePath" value="${uploadPath}${lastSegment}"/>
+                        
+                        <img id="imagenJuego${juego.idjuego}" src="${newImagePath}" alt="image-${juego.nomJuego}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${newImagePath}')">
                 </td>
                 <td>
                     <%-- Mostrar imagen de clasificación según el valor --%>

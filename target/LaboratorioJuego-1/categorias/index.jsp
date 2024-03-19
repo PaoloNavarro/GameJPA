@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
-    <title>Lista de alumnos</title>
+    <title>Lista de categorias</title>
     <%@ include file="/layout/header.jsp" %>
     <style>
           /* The Modal (background) */
@@ -118,12 +118,18 @@
             </tr>
         </thead>
         <tbody>
+            <c:set var="uploadPath" value="uploads/" />
             <c:forEach items="${categorias}" var="categoria">
                 <tr>
                     <td class="d-none">${categoria.idcategoria}</td>
                     <td>${categoria.categoria}</td>
                     <td>
-                        <img src="${categoria.imagenCat}" alt="image-${categoria.categoria}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${categoria.imagenCat}')">
+                          <c:set var="segments" value="${fn:split(categoria.imagenCat, '/')}"/>
+                       <c:set var="lastSegmentIndex" value="${fn:length(segments) - 1}"/>
+                        <c:set var="lastSegment" value="${segments[lastSegmentIndex]}"/>
+                        <%-- Construir la nueva ruta de la imagen con el último segmento --%>
+                        <c:set var="newImagePath" value="${uploadPath}${lastSegment}"/>
+                        <img src="${newImagePath}" alt="image-${categoria.categoria}" style="max-width: 75px; max-height: 50px;" onclick="mostrarImagen('${newImagePath}')">
                     </td>                
                     <td>
                         <a href="categoriaseditar?id=${categoria.idcategoria}" class="btn btn-primary">

@@ -1,7 +1,14 @@
 controladores\exceptions\IllegalOrphanException.class
+servelet\juegoServelet.class
 modelos\Categoria.class
 Utils\Prueba.class
-controladores\CategoriaJpaController.class
-controladores\exceptions\NonexistentEntityException.class
+controladores\exceptions\PreexistingEntityException.class
+servelet\ExportarPDFServlet.class
 controladores\JuegoJpaController.class
+servelet\consultaServelet.class
+servelet\categoriaServelet.class
+controladores\CategoriaJpaController.class
+servelet\ExportarCSVServlet.class
+controladores\exceptions\NonexistentEntityException.class
 modelos\Juego.class
+Utils\CSVUtils.class

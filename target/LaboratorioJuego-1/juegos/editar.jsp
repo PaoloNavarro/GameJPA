@@ -51,7 +51,7 @@
 </style>
 
 
-<form action="juegoseditar" method="post"  onsubmit="return validarFormulario()">
+<form action="juegoseditar" method="post" enctype="multipart/form-data"  onsubmit="return validarFormulario()">
     <h1>Editar Juego</h1>
 
     <input type="hidden" id="idJuego" name="idJuego" value="${juego.idjuego}">
@@ -81,12 +81,13 @@
 
     <label for="existencias">Existencias:</label>
     <input type="number" id="existencias" name="existencias" value="${juego.existencias}" required min="0"><br><br>
-
-    <label for="imagen">Imagen:</label>
-    <input type="url" id="imagen" name="imagen" value="${juego.imagen}" onchange="mostrarImagen(this.value)"><br><br>
-      <div id="imagenPreviewContainer" style="display: none;">
+               
+       <label for="imagen">Imegen</label>
+       <input type="file" id="imagen" name="imagen"  accept="image/*" onchange="mostrarImagenVistaPrevia()">
+    
+     <div id="imagenPreviewContainer" style="display: none;">
             <img id="imagenPreview" src="#" alt="Vista previa de la imagen" style="margin-top: 10px; margin-bottom: 10px; max-width: 100px;">
-        </div>
+       </div>
 
 
     <input type="submit" value="Guardar Cambios">
@@ -94,6 +95,31 @@
 <div class="error-message" id="errorMessage"></div>
 
 <%@ include file="/layout/footer.jsp" %>
+<script>
+    window.onload = function() {
+        // Obtener el valor de juego.imagen
+        var juegoImagen = "${juego.imagen}";
+
+        // Verificar si el valor de juego.imagen está presente
+        if (juegoImagen) {
+            // Obtener la imagen de vista previa
+            var imagenPreview = document.getElementById("imagenPreview");
+            var imagenPreviewContainer = document.getElementById("imagenPreviewContainer");
+
+            // Obtener la parte de la ruta después del último '/'
+            var lastSegment = juegoImagen.substring(juegoImagen.lastIndexOf('/') + 1);
+
+            // Construir la ruta completa para la imagen de vista previa
+            var uploadPath = "uploads/";
+            var imagePath = uploadPath + lastSegment;
+
+            // Mostrar la imagen de vista previa
+            imagenPreview.src = imagePath;
+            imagenPreviewContainer.style.display = "block"; // Mostrar el contenedor de la imagen de vista previa
+        }
+    };
+</script>
+
 
 <script>
     function validarFormulario() {
@@ -133,22 +159,28 @@
 
         return true; // Devuelve true si la validación es exitosa
     }
-        function mostrarVistaPreviaImagen() {
-        var inputURLImagen = document.getElementById("imagen");
+    function mostrarImagenVistaPrevia() {
+        var fileInput = document.getElementById("imagen");
         var imagenPreview = document.getElementById("imagenPreview");
         var imagenPreviewContainer = document.getElementById("imagenPreviewContainer");
+        var file = fileInput.files[0];
+        var reader = new FileReader();
 
-        // Mostrar la imagen de vista previa si la URL de la imagen es válida
-        if (inputURLImagen.value && inputURLImagen.checkValidity()) {
-            imagenPreview.src = inputURLImagen.value;
+        reader.onload = function(e) {
+            imagenPreview.src = e.target.result;
             imagenPreviewContainer.style.display = "block"; // Mostrar el contenedor de la imagen de vista previa
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
         } else {
-            imagenPreview.src = "#"; // Restablecer la imagen de vista previa
-            imagenPreviewContainer.style.display = "none"; // Ocultar el contenedor de la imagen de vista previa
+            // Si no se selecciona un archivo, establecer el valor del campo de archivo con la ruta de la imagen de juego
+            fileInput.value = "${juego.imagen}";
+            // Mostrar la imagen de juego como vista previa
+            imagenPreview.src = "${juego.imagen}";
+            imagenPreviewContainer.style.display = "block"; // Mostrar el contenedor de la imagen de vista previa
         }
     }
-     window.onload = function() {
-        mostrarVistaPreviaImagen();
-    };
+
     
 </script>

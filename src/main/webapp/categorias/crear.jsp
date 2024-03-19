@@ -51,14 +51,14 @@
     }
 </style>
 
-<form action="categoriascrear" method="post">
+<form action="categoriascrear" method="post"  enctype="multipart/form-data">
     <h1>Crear Categoría</h1>
 
     <label for="categoria">Nombre de la Categoría:</label>
     <input type="text" id="categoria" name="categoria" required><br>
 
-    <label for="imagen">URL de la Imagen:</label>
-    <input type="url" id="imagen" name="imagen" required onchange="mostrarImagen(this.value)"><br>
+    <label for="imagen">Imagen:</label>
+    <input style="margin-top: 15px;" type="file" id="imagen" name="imagen" required accept="image/*" onchange="mostrarImagenVistaPrevia()">
 
     <div id="imagenPreviewContainer" style="display: none;">
         <img id="imagenPreview" src="#" alt="Vista previa de la imagen" style="margin-top: 10px ; max-width: 100px;">
@@ -105,15 +105,21 @@
 
         return true;
     }
-     function mostrarImagen(urlImagen) {
-        var previewContainer = document.getElementById("imagenPreviewContainer");
-        var previewImagen = document.getElementById("imagenPreview");
+    
+    function mostrarImagenVistaPrevia() {
+        var fileInput = document.getElementById("imagen");
+        var imagenPreview = document.getElementById("imagenPreview");
+        var imagenPreviewContainer = document.getElementById("imagenPreviewContainer");
+        var file = fileInput.files[0];
+        var reader = new FileReader();
 
-        if (urlImagen.trim() === "") {
-            previewContainer.style.display = "none";
-        } else {
-            previewImagen.src = urlImagen;
-            previewContainer.style.display = "block";
+        reader.onload = function(e) {
+            imagenPreview.src = e.target.result;
+            imagenPreviewContainer.style.display = "block"; // Mostrar el contenedor de la imagen de vista previa
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
         }
     }
 </script>

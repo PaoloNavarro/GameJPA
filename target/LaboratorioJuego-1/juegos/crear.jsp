@@ -50,7 +50,7 @@
     }
 </style>
 
-<form action="juegoscrear" method="post"  onsubmit="return validarFormulario()">
+<form id="formulario" action="juegoscrear" method="post" enctype="multipart/form-data">
     <h1>Crear Juego</h1>
 
     <label for="nomJuego">Nombre del Juego:</label>
@@ -59,7 +59,7 @@
     <label for="idCategoria">Categoría:</label>
     <select id="idCategoria" name="idCategoria" required>
             <c:forEach items="${categorias}" var="categoria">
-                <option value="${categoria.idcategoria}">${categoria.categoria}</option>
+                <option value="${categoria.idcategoria}">${categoria.idcategoria}</option>
              </c:forEach>
     </select><br><br>
      <label for="clasificacion">Clasificación:</label>
@@ -79,63 +79,39 @@
 
     <label for="existencias">Existencias:</label>
     <input type="number" id="existencias" name="existencias" required min="0"><br><br>
+     <c:set var="uploadPath" value="uploads/" />
 
     <label for="imagen">Imagen:</label>
-    <input type="url" id="imagen" name="imagen" required onchange="mostrarImagen(this.value)"><br><br>
+    <input type="file" id="imagen" name="imagen" required accept="image/*" onchange="mostrarImagenVistaPrevia()">
     
+
     <div id="imagenPreviewContainer" style="display: none;">
          <img id="imagenPreview" src="#" alt="Vista previa de la imagen" style="margin-top: 10px ; margin-bottom: 5px; max-width: 100px;">
      </div>
+        <input  type="submit" value="Guardar juego">
 
-    <input type="submit" value="Guardar Juego">
 </form>
 
 <%@ include file="/layout/footer.jsp" %>
 
 <script>
-    function validarFormulario() {
-        var nomJuego = document.getElementById("nomJuego").value;
-        var idCategoria = document.getElementById("idCategoria").value;
-        var precio = document.getElementById("precio").value;
-        var existencias = document.getElementById("existencias").value;
-        var imagen = document.getElementById("imagen").value;
+   
 
-        if (nomJuego.trim() === "") {
-            alert("Por favor, ingrese el nombre del juego.");
-            return false;
-        }
+  function mostrarImagenVistaPrevia() {
+    var fileInput = document.getElementById("imagen");
+    var imagenPreview = document.getElementById("imagenPreview");
+    var imagenPreviewContainer = document.getElementById("imagenPreviewContainer");
+    var file = fileInput.files[0];
+    var reader = new FileReader();
 
-        if (idCategoria.trim() === "") {
-            alert("Por favor, seleccione una categoría.");
-            return false;
-        }
+    reader.onload = function(e) {
+        imagenPreview.src = e.target.result;
+        imagenPreviewContainer.style.display = "block"; // Mostrar el contenedor de la imagen de vista previa
+    };
 
-        if (precio.trim() === "" || isNaN(parseFloat(precio))) {
-            alert("Por favor, ingrese un precio válido.");
-            return false;
-        }
-
-        if (existencias.trim() === "" || isNaN(parseInt(existencias))) {
-            alert("Por favor, ingrese un número válido para las existencias.");
-            return false;
-        }
-
-        if (imagen.trim() === "") {
-            alert("Por favor, seleccione una imagen para el juego.");
-            return false;
-        }
-
-        return true;
+    if (file) {
+        reader.readAsDataURL(file);
     }
-    function mostrarImagen(urlImagen) {
-        var previewContainer = document.getElementById("imagenPreviewContainer");
-        var previewImagen = document.getElementById("imagenPreview");
+}
 
-        if (urlImagen.trim() === "") {
-            previewContainer.style.display = "none";
-        } else {
-            previewImagen.src = urlImagen;
-            previewContainer.style.display = "block";
-        }
-    }
 </script>
